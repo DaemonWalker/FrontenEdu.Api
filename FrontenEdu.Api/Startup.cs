@@ -28,7 +28,7 @@ namespace FrontenEdu.Api
         public void ConfigureServices(IServiceCollection services)
         {
             var fsql = new FreeSql.FreeSqlBuilder()
-                .UseConnectionString(FreeSql.DataType.MySql, "Server=192.168.50.200;Database=feedu;User=feedu;Password=feedu;")
+                .UseConnectionString(FreeSql.DataType.MySql, Configuration.GetConnectionString("mysql"))
                 .UseAutoSyncStructure(true)
                 .Build();
 
@@ -37,7 +37,7 @@ namespace FrontenEdu.Api
             {
                 opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
-                services.AddSingleton(typeof(IPasswordHasher<>), typeof(PasswordHasher<>));
+            services.AddSingleton(typeof(IPasswordHasher<>), typeof(PasswordHasher<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

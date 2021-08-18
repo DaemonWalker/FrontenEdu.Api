@@ -24,13 +24,17 @@ namespace FrontenEdu.Api.Controllers
         public async Task<IActionResult> Login([FromBody] LoginModel login)
         {
             var dbLogin = await freeSql.Select<LoginModel>().Where(p => p.UserName == login.UserName).FirstAsync();
+            if (dbLogin == null)
+            {
+                return Ok(ResponseModel.Failed("账号不存在"));
+            }
             if (passwordHasher.VerifyHashedPassword(login, dbLogin.Password, login.Password) == PasswordVerificationResult.Success)
             {
                 return Ok(ResponseModel.SuccessData(dbLogin));
             }
             else
             {
-                return Ok(ResponseModel.FailedData());
+                return Ok(ResponseModel.Failed("密码错误"));
             }
         }
 
